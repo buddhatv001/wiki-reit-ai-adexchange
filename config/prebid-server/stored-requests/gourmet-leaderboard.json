@@ -1,0 +1,41 @@
+{
+  "id": "gourmet-leaderboard",
+  "imp": [{
+    "id": "gourmet-leaderboard-1",
+    "banner": {
+      "format": [
+        {"w": 728, "h": 90},
+        {"w": 970, "h": 90},
+        {"w": 970, "h": 250}
+      ]
+    },
+    "bidfloor": 3.00,
+    "bidfloorcur": "USD",
+    "ext": {
+      "prebid": {
+        "bidder": {
+          "appnexus": {"placement_id": "APPNEXUS_GOURMET_ID"},
+          "pubmatic": {"publisherId": "PUBMATIC_ID", "adSlot": "gourmet_leaderboard"},
+          "ix": {"siteId": "IX_SITE_ID"},
+          "openx": {"unit": "OPENX_UNIT", "delDomain": "OPENX_DOMAIN"},
+          "rubicon": {"accountId": "RUBICON_ACCT", "siteId": "RUBICON_SITE", "zoneId": "RUBICON_ZONE"}
+        }
+      }
+    }
+  }],
+  "site": {
+    "page": "https://gourmetmagazine.com",
+    "domain": "gourmetmagazine.com",
+    "cat": ["IAB8"],
+    "publisher": {
+      "id": "smartmoneymedia",
+      "name": "Smart Money Media AI",
+      "domain": "smartmoneymedia.ai"
+    },
+    "content": {
+      "language": "en",
+      "cat": ["IAB8-1", "IAB8-5", "IAB8-9"]
+    },
+    "keywords": "food,cooking,gourmet,recipes,fine dining,wine,culinary"
+  }
+}

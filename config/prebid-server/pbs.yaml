@@ -1,0 +1,138 @@
+# ============================================================================
+# PREBID SERVER CONFIGURATION
+# Wiki REIT AI Ad Exchange / Smart Money Media AI
+# ============================================================================
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  admin_port: 6060
+  enable_gzip: true
+
+# Auction settings
+auction:
+  timeout_ms: 1000
+  cache_type: "redis"
+  truncate_target_attr: 40
+  price_floors:
+    enabled: true
+  debug:
+    allow: true
+
+# Privacy / Compliance
+privacy:
+  gdpr:
+    enabled: true
+    default_value: "0"
+    tcf2:
+      enabled: true
+  ccpa:
+    enabled: true
+  lmt:
+    enforce: true
+
+# Redis cache for bid storage
+cache:
+  host: "redis"
+  port: 6379
+  db: 0
+  default_ttl_seconds: 300
+
+# Metrics
+metrics:
+  prometheus:
+    enabled: true
+    port: 9090
+
+# ============================================================================
+# SSP / DSP BIDDER ADAPTERS
+# These are the demand partners that compete for your inventory
+# ============================================================================
+adapters:
+
+  # --- TIER 1: Critical SSPs ---
+  
+  appnexus:  # Xandr/Microsoft
+    enabled: true
+    endpoint: "https://prebid.adnxs.com/pbs/v1/openrtb2/auction"
+    extra_info: "{\"hbSource\":5}"
+  
+  pubmatic:
+    enabled: true
+    endpoint: "https://hbopenbid.pubmatic.com/translator?source=prebid-server"
+  
+  ix:  # Index Exchange
+    enabled: true
+    endpoint: "https://htlb.casalemedia.com/openrtb/pbjs"
+  
+  rubicon:  # Magnite
+    enabled: true
+    endpoint: "https://prebid-server.rubiconproject.com/openrtb2/auction"
+
+  openx:
+    enabled: true
+    endpoint: "https://rtb.openx.net/openrtb/prebid"
+
+  # --- TIER 2: High Priority ---
+  
+  criteo:
+    enabled: true
+    endpoint: "https://ssp-bid.criteo.com/openrtb/pbs/auction/request"
+  
+  medianet:
+    enabled: true
+    endpoint: "https://prebid.media.net/rtb/prebid"
+
+  sovrn:
+    enabled: true
+    endpoint: "https://ap.lijit.com/rtb/bid?src=prebid_server"
+
+  triplelift:
+    enabled: true
+    endpoint: "https://tlx.3lift.com/s2s/auction/json"
+
+  smartadserver:
+    enabled: true
+    endpoint: "https://ssb-global.smartadserver.com/api/bid"
+
+  # --- TIER 3: Additional Demand ---
+  
+  smaato:
+    enabled: true
+    endpoint: "https://prebid.ad.smaato.net/oapi/v1/s2s/bid"
+
+  adform:
+    enabled: true
+    endpoint: "https://adx.adform.net/adx/openrtb"
+
+  sharethrough:
+    enabled: true
+    endpoint: "https://btlr.sharethrough.com/universal/v1?supply_id=WYu2slkR"
+
+  conversant:
+    enabled: true
+    endpoint: "https://web.hb.ad.cpe.dotomi.com/s2s/header/24"
+
+  verizonmedia:  # Yahoo
+    enabled: true
+    endpoint: "https://c2shb.ssp.yahoo.com/bid/ysbid"
+
+# ============================================================================
+# STORED REQUESTS - Pre-configured ad units for each magazine brand
+# ============================================================================
+stored_requests:
+  filesystem:
+    enabled: true
+    directorypath: "/etc/stored-requests"
+
+# ============================================================================
+# ANALYTICS
+# ============================================================================
+analytics:
+  file:
+    enabled: true
+    filename: "/var/log/prebid/analytics.log"
+
+# Account defaults
+accounts:
+  default_integration: "web"
