@@ -1,162 +1,92 @@
-# 🕉️ WIKI REIT AI AD EXCHANGE
-## Open Source Programmatic Advertising Stack
-### Smart Money Media AI / Buddha Digital Temple | 508(c)(1)(A)
+# Wiki REIT AI Ad Exchange
+### Open Source SSP + DSP + Prebid Programmatic Stack
+**Buddha Digital Temple × Smart Money Media AI | 508(c)(1)(A)**
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/deploy?repo=https://github.com/buddhatv001/wiki-reit-ai-adexchange)
 
 ---
 
-## What This Is
+## Deploy in 3 Steps
 
-A complete, open-source programmatic advertising platform that replaces the need 
-for third-party SSPs and DSPs. Deploy on your GoDaddy VPS and keep 100% of ad revenue 
-across your entire network: 9 magazine brands, 3,000 publications, 100M+ sites.
+### Option A — Railway (Recommended, fastest)
+1. Click **Deploy on Railway** button above
+2. Set `DISCORD_TOKEN` + `DISCORD_CHANNEL_ID` in Railway variables
+3. Done — Discord bot live in ~3 minutes
 
-## Architecture
-
-```
-[User visits GourmetMagazine.com]
-         │
-         ▼
-[Prebid.js in page header]  ◄── Deployed on ALL your sites
-         │
-         ├──► Client-side bids (fast SSPs)
-         │
-         ▼
-[YOUR Prebid Server]  ◄── Running on GoDaddy VPS
-         │
-         ├──► Server-side bids to 15+ SSPs/DSPs simultaneously
-         │
-         ▼
-[Auction Engine]  ◄── Picks highest bidder
-         │
-         ▼
-[Google Ad Manager]  ◄── Final decision: programmatic vs direct-sold
-         │
-         ▼
-[Ad displays in ~200ms] ──► Revenue → Stripe → 508(c)(1)(A) accounts
-         │
-         ▼
-[Discord Bot]  ◄── Real-time revenue alerts
-```
-
-## Components (ALL Open Source)
-
-| Component | License | Purpose |
-|-----------|---------|---------|
-| Prebid.js | Apache 2.0 | Client-side header bidding (300+ adapters) |
-| Prebid Server | Apache 2.0 | Server-side auctions (Go, Docker) |
-| RTB4FREE | Open Source | DSP - Lets advertisers buy your inventory |
-| Revive Adserver | GPL v2 | Ad creative serving & tracking |
-| ELK Stack | Open Source | Analytics / Data Management Platform |
-| Redis | BSD | High-speed bid caching |
-| PostgreSQL | PostgreSQL | Campaign & revenue database |
-| Nginx | BSD | Reverse proxy, SSL, rate limiting |
-| Discord Bot | Custom | Revenue monitoring & alerts |
-
-## Quick Start (GoDaddy VPS)
-
-### Prerequisites
-- GoDaddy VPS with root/SSH access (Ubuntu or AlmaLinux)
-- At least 4GB RAM, 2 CPU cores recommended
-- A domain with DNS access
-
-### Deploy in 3 Commands
-
+### Option B — GoDaddy VPS (Full stack with all services)
 ```bash
-# 1. SSH into your GoDaddy VPS
 ssh root@YOUR_VPS_IP
-
-# 2. Upload or clone the stack
-git clone https://github.com/YOUR_REPO/adtech-stack.git
-cd adtech-stack
-
-# 3. Run the deployment
+git clone https://github.com/buddhatv001/wiki-reit-ai-adexchange.git
+cd wiki-reit-ai-adexchange
+cp .env.example .env
+nano .env   # Add DISCORD_TOKEN + DISCORD_CHANNEL_ID
 chmod +x deploy-godaddy.sh
 ./deploy-godaddy.sh
 ```
 
-### After Deployment
-
-1. **Edit `.env`** with your Discord bot token and SSP partner IDs
-2. **Point DNS** in GoDaddy to your VPS IP:
-   - `pbs.wikireit.ai` → VPS IP
-   - `campaigns.wikireit.ai` → VPS IP
-   - `ads.wikireit.ai` → VPS IP
-   - `analytics.wikireit.ai` → VPS IP
-3. **Install SSL**: `certbot --nginx`
-4. **Apply for SSP accounts** (free):
-   - Index Exchange (no minimum traffic)
-   - PubMatic
-   - OpenX
-   - Magnite
-5. **Add Prebid.js** to your magazine sites (see `prebid/wiki-reit-prebid.js`)
-
-## File Structure
-
+### Option C — Mac mini (Local)
+```bash
+cd discord-bot
+npm install
+DISCORD_TOKEN=your_token DISCORD_CHANNEL_ID=your_channel node bot.js
 ```
-adtech-stack/
-├── deploy-godaddy.sh              # One-click GoDaddy deployment
-├── docker-compose.yml             # All services orchestration
-├── .env                           # Credentials (auto-generated)
-├── README.md                      # This file
-│
-├── prebid/
-│   └── wiki-reit-prebid.js        # Universal Prebid.js for all brands
-│
-├── discord-bot/
-│   ├── bot.js                     # Discord revenue monitor
-│   ├── package.json
-│   └── Dockerfile
-│
-├── config/
-│   ├── prebid-server/
-│   │   ├── pbs.yaml               # Prebid Server config (15+ SSPs)
-│   │   └── stored-requests/       # Pre-configured ad units per brand
-│   ├── nginx/
-│   │   └── nginx.conf             # Reverse proxy & rate limiting
-│   └── postgres/
-│       └── init.sql               # Database schema
-│
-└── logs/                          # Log storage
-```
+
+---
+
+## What's Included
+
+| Service | Purpose | Port |
+|---------|---------|------|
+| **Prebid Server** | Server-side header bidding (Apache 2.0) | 8000 |
+| **RTB4FREE DSP** | Open source demand-side platform | 8080 |
+| **Campaign Manager** | Self-serve advertiser portal | 3000 |
+| **Revive Adserver** | Ad creative serving | 8888 |
+| **Dashboard** | Revenue command center (React) | 4000 |
+| **Discord Bot** | Revenue alerts + commands | — |
+| **Redis** | Bid caching | 6379 |
+| **PostgreSQL** | Campaign data + revenue tracking | 5432 |
+| **Elasticsearch** | Analytics DMP | 9200 |
+| **Kibana** | Analytics dashboard | 5601 |
+| **Nginx** | Reverse proxy + SSL | 80/443 |
+
+---
 
 ## Discord Bot Commands
+```
+!revenue           — Today's revenue across all brands
+!revenue gourmet   — Revenue for specific brand
+!bids              — Live bid activity
+!topbidders        — Top SSP/DSP partners
+!health            — System health check
+!brands            — All brands + CPM floors
+!floor gourmet 3.5 — Update floor price
+!weekly            — Weekly performance report
+```
 
-| Command | Description |
-|---------|-------------|
-| `!revenue` | Today's revenue across all brands |
-| `!revenue gourmet` | Revenue for Gourmet specifically |
-| `!bids` | Live bid activity summary |
-| `!topbidders` | Top SSP/DSP partners by revenue |
-| `!health` | System health check |
-| `!brands` | All brands with floor CPMs |
-| `!weekly` | 7-day performance chart |
-| `!help` | Show all commands |
+---
 
-## Brand Configuration
+## DNS Setup (after VPS deploy)
+Point these A records to your VPS IP in GoDaddy:
+```
+pbs.wikireit.ai         → VPS_IP
+campaigns.wikireit.ai   → VPS_IP
+ads.wikireit.ai         → VPS_IP
+analytics.wikireit.ai   → VPS_IP
+```
 
-| Brand | Floor CPM | Category | Status |
-|-------|-----------|----------|--------|
-| Gourmet | $3.00 | Food & Drink | 🟢 Active |
-| Mademoiselle | $2.50 | Fashion | 🟢 Active |
-| SmartMoney | $5.00 | Finance | 🟢 Active |
-| Modern Bride | $4.00 | Weddings | 🟢 Active |
-| Family Circle | $2.00 | Family | 🟢 Active |
-| Blender | $1.50 | Music | ⚪ Pending |
-| Ladies' Home Journal | $2.00 | Home | ⚪ Pending |
-| Business 2.0 | $4.50 | Business | ⚪ Pending |
-| Teen People | $1.00 | Teen/COPPA | ⚪ Pending |
+---
 
 ## Revenue Projections
+| Tier | Properties | Daily Impressions | Daily Revenue |
+|------|-----------|-------------------|---------------|
+| Tier 1 (9 magazines) | 9 | 850K | $4,200 |
+| Tier 2 (3,000 pubs) | 3,000 | 15M | $28,500 |
+| Tier 3 (Wiki News) | 250 | 8M | $12,800 |
+| Tier 4 (100M+ sites) | 100M+ | 500M | $187,500 |
+| **TOTAL** | | **524M/day** | **$233,000/day** |
 
-| Scale | Monthly Impressions | Est. Monthly Revenue |
-|-------|--------------------|--------------------|
-| 5 Active Brands | 5M | $12,500 |
-| All 9 Brands | 15M | $45,000 |
-| + Wiki REIT Network (1K sites) | 50M | $100,000 |
-| + Full 100M Network | 500M | $750,000 |
+**Monthly:** $7M | **Annual:** $85M *(at full 4-tier scale)*
 
-## Support
+---
 
-Built with 🕉️ by Buddha Digital Temple for the spiritual technology enterprise.
-
-All core components are open source. You own everything.
+*Buddha Digital Temple × Smart Money Media AI | 508(c)(1)(A) Religious Organization*
